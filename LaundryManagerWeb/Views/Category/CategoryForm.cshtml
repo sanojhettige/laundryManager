@@ -1,0 +1,44 @@
+﻿@model LaundryManagerWeb.ViewModels.CategoryFormViewModel
+
+@{ /**/
+
+    ViewBag.Title = "Create Service Category";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+@using (Html.BeginForm("Save", "Category"))
+{
+<div class="row">
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.Category.Name)
+        @Html.TextBoxFor(m => m.Category.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Category.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.Category.UnitType)
+        @Html.DropDownListFor(m => m.Category.UnitType, ViewData["list"] as SelectList, "Select Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Category.UnitType, "", new { @class = "text-danger" })
+    </div>
+
+
+</div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.Category.UnitCharge)
+                        @Html.TextBoxFor(m => m.Category.UnitCharge, new { @class = "form-control", type = "number" })
+                        @Html.ValidationMessageFor(m => m.Category.UnitCharge, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+
+                                @Html.HiddenFor(m => m.Category.Id)
+                                                @Html.AntiForgeryToken()
+                                                                <button type="submit" class="btn btn-primary">Save</button>}
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

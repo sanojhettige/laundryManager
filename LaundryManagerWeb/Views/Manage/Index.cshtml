@@ -1,0 +1,39 @@
+﻿@model LaundryManagerWeb.Models.ProfileViewModel
+
+@{ /**/
+
+    ViewBag.Title = "Update Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+@using (Html.BeginForm("Index", "Manage"))
+{
+<div class="row">
+    <div class="form-group col-md-12">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+
+</div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.PhoneNumber)
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                                                @Html.AntiForgeryToken()
+                                                                <button type="submit" class="btn btn-primary">Update Profile</button>}
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,72 @@
+﻿<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-text mx-3">XYZ Laundry</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
+        <a class="nav-link" href="/">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Management
+    </div>
+
+    <!-- Nav Item Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="/Orders">
+            <i class="fas fa-fw fa-building"></i>
+            <span>Orders</span>
+        </a>
+    </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseRpts" aria-expanded="true" aria-controls="collapseRpts">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Reports</span>
+        </a>
+        <div id="collapseRpts" class="collapse" aria-labelledby="collapseRpts" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner">
+                <a class="collapse-item" href="/Report/DuePayments">Due Payments</a>
+                <a class="collapse-item" href="/Report/Orders">Orders</a>
+                <a class="collapse-item" href="/Report/Customers">Customers</a>
+            </div>
+        </div>
+    </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseStgs" aria-expanded="true" aria-controls="collapseStgs">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Settings</span>
+        </a>
+        <div id="collapseStgs" class="collapse" aria-labelledby="collapseStgs" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner">
+                <a class="collapse-item" href="/Category">Service Types</a>
+                <a class="collapse-item" href="/Manage/Users">Users</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<LaundryManagerWeb.Models.Category>
+
+@{ ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Service Types</h2>
+    </div>
+    <div class="col-md-6">
+        @Html.ActionLink("New Type", "Create", "Category", null, new { @class = "btn btn-primary float-right" })
+    </div>
+</div>
+
+<table id="categories" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th width="50%">Name</th>
+            <th width="30%">Charge per Unit (Rs.)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section scripts
+{
+    <script>$(document).ready(function () {
+    var table = $("#categories").DataTable({
+                ajax: {
+            url: "/api/category",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, category) {
+                            return "<a href='/Category/edit/" + category.id + "'>" + category.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "unitCharge",
+                        render: function (data, type, category) {
+                            return category.unitCharge
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, category) {
+                            let content = "<a href='/Category/edit/" + category.id + "' class='btn btn-success btn-sm'>Edit</a>";
+                            content += "<button class='btn btn-danger btn-sm delete' data-category-id=" + data + ">Delete</button>";
+
+                            return "<div class='btn-group'>"+content+"</div>";
+                        }
+                    }
+                ]
+            });
+
+    $("#categories").on("click", ".delete", function () {
+        var button = $(this).attr("data-category-id");
+        if (confirm("are you sure you want to delete the category?")) {
+                    $.ajax({
+                        url: "/api/category/" + button,
+                        method: "DELETE",
+                        dataType: "json",
+                        success: function (data) {
+                            window.location.reload();
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    })
+                }
+            })
+        })</script>
+}
