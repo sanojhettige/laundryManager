@@ -125,8 +125,8 @@ namespace LaundryManagerWeb.Controllers
                     //temp code
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var roleManager = new RoleManager<IdentityRole>(roleStore);
-                    await roleManager.CreateAsync(new IdentityRole("Admin"));
-                    await UserManager.AddToRoleAsync(user.Id, "admin");
+                    await roleManager.CreateAsync(new IdentityRole("Customer"));
+                    await UserManager.AddToRoleAsync(user.Id, "customer");
 
                     //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
@@ -136,7 +136,7 @@ namespace LaundryManagerWeb.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
                 AddErrors(result);
             }
@@ -425,7 +425,13 @@ namespace LaundryManagerWeb.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Dashboard");
+
+            if (User.IsInRole(RoleName.Admin))
+            {
+                return RedirectToAction("Index", "Dashboard"); 
+            }
+            return RedirectToAction("Index", "Home");
+
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

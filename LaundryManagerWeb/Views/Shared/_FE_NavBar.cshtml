@@ -16,7 +16,7 @@
                             <li><a href="#services">Services</a></li>
                             @if (Request.IsAuthenticated)
                             {
-                                <li><a href="/Account">My Account</a></li>
+                                <li><a href="/Manage">My Account</a></li>
                             }
                             <li><a href="#contact">Contact</a></li>
                         </ul>
@@ -25,7 +25,8 @@
             </div>
         </div>
         <div class="header-right d-none d-lg-block">
-            <a href="#" class="header-btn1"><img src="assets/img/icon/call.png" alt=""> 07x xxx xx xx</a>
+            @if (!Request.IsAuthenticated)
+            { <a href="/Account/login" class="header-btn1">SignIn</a> }
             <a href="/Order/Create" class="header-btn2">Make an Appointment</a>
         </div>
         <!-- Mobile Menu -->

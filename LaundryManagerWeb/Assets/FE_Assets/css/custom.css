@@ -1,0 +1,14 @@
+﻿.auth-container {
+    min-width: 30%;
+    margin: auto;
+    max-width: 500px;
+}
+
+    .auth-container a {
+        color: #6785FF;
+    }
+
+    .auth-container .auth-bottom {
+        display: inline-block;
+        width: 100%;
+    }

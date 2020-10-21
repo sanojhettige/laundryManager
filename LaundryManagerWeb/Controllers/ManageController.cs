@@ -63,8 +63,16 @@ namespace LaundryManagerWeb.Controllers
             if (user == null)
                 return HttpNotFound();
 
+            var LayOut = "~/Views/Shared/_Layout.cshtml";
+
             ViewData["user"] = user;
 
+            if(User.IsInRole(RoleName.Customer))
+            {
+                LayOut = "~/Views/Shared/_FE_Layout.cshtml";
+            }
+
+            ViewData["LayOut"] = LayOut;
             var viewModel = new ProfileViewModel
             {
                 Name = user.Name,

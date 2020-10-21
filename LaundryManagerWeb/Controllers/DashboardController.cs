@@ -13,7 +13,10 @@ namespace ApartmentManager.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            int propTotal = 0;
+            if (User.IsInRole(RoleName.Customer)) {
+                return RedirectToAction("Index", "Home");
+            }
+                int propTotal = 0;
             int aptTotal = 0;
             int owners = 0;
             int tenants = 0;
