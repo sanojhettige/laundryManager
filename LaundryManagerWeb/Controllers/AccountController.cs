@@ -320,7 +320,6 @@ namespace LaundryManagerWeb.Controllers
             }
         }
 
-        //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
