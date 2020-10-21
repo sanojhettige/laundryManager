@@ -354,3 +354,4 @@ D:\Sanoj\laundryManager\LaundryManagerWeb\obj\Debug\LaundryManagerWeb.csproj.Cor
 D:\Sanoj\laundryManager\LaundryManagerWeb\obj\Debug\LaundryManagerWeb.csproj.CopyComplete
 D:\Sanoj\laundryManager\LaundryManagerWeb\obj\Debug\ApartmentManager.dll
 D:\Sanoj\laundryManager\LaundryManagerWeb\obj\Debug\ApartmentManager.pdb
+D:\Sanoj\laundryManager\LaundryManagerWeb\obj\Debug\LaundryManagerWeb.csprojAssemblyReference.cache
