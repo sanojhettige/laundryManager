@@ -8,14 +8,14 @@ namespace LaundryManagerWeb.App_Code
 {
     public class GlobalFunctions
     {
-        public static SelectList MesureTypes()
+        public static SelectList MesureTypes(int selectedType)
         {
             return new SelectList(new[]
             {
                 new { ID = 1, Name = "Kg" },
                 new { ID = 2, Name = "Unit" },
             },
-            "ID", "Name", 1);
+            "ID", "Name", selectedType);
         }
 
         public static SelectList UserRoles()

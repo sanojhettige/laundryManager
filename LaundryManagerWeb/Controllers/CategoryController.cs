@@ -32,7 +32,7 @@ namespace LaundryManagerWeb.Controllers
         // GET: Category
         public ActionResult Index()
         {
-            var list = GlobalFunctions.MesureTypes();
+            var list = GlobalFunctions.MesureTypes(0);
             ViewData["list"] = list;
 
             if (User.IsInRole(RoleName.Admin))
@@ -46,7 +46,7 @@ namespace LaundryManagerWeb.Controllers
         [Authorize(Roles = RoleName.Admin)]
         public ActionResult Create()
         {
-            var list = GlobalFunctions.MesureTypes();
+            var list = GlobalFunctions.MesureTypes(0);
 
             var viewModel = new CategoryFormViewModel
             {
@@ -113,7 +113,7 @@ namespace LaundryManagerWeb.Controllers
             if (category == null)
                 return HttpNotFound();
 
-            var list = GlobalFunctions.MesureTypes();
+            var list = GlobalFunctions.MesureTypes(0);
 
             var viewModel = new CategoryFormViewModel
             {

@@ -56,6 +56,9 @@ namespace LaundryManagerWeb
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                         "~/Assets/Scripts/app.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/cartjs").Include(
+                "~/Assets/FE_Assets/js/cart.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Assets/Vendor/fontawesome-free/css/all.min.css",
                         "~/Assets/Vendor/datatables/dataTables.bootstrap4.min.css",

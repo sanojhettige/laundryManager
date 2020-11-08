@@ -35,6 +35,8 @@ namespace LaundryManagerWeb.Models
         public DbSet<Category> Category { get; set; }
 
         public DbSet<Order> Order { get; set; }
+
+        public DbSet<OrderItem> OrderItem { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

@@ -18,6 +18,10 @@ namespace LaundryManagerWeb.App_Start
             Mapper.CreateMap<Activity, ActivityDto>();
             Mapper.CreateMap<CategoryDto, Category>();
             Mapper.CreateMap<Category, CategoryDto>();
+            Mapper.CreateMap<Order, OrderDto>();
+            Mapper.CreateMap<OrderDto, Order>();
+            Mapper.CreateMap<OrderItem, OrderItemDto>();
+            Mapper.CreateMap<OrderItemDto, OrderItem>();
 
         }
     }

@@ -9,7 +9,7 @@ namespace LaundryManagerWeb.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(LaundryManagerWeb.Models.ApplicationDbContext context)
