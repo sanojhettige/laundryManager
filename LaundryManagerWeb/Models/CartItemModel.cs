@@ -14,7 +14,7 @@ namespace LaundryManagerWeb.Models
 
         public decimal Price { get; set; }
 
-        public decimal OldPrice { get; set; }
+        public string UnitType { get; set; }
 
         public int Quantity { get; set; }
 

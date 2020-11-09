@@ -11,6 +11,8 @@ namespace LaundryManagerWeb.ViewModels
         public Order Order { get; set; }
 
         public IEnumerable<Category> Category { get; set; }
+
+        public IEnumerable<CartItemModel> CartItem { get; set; }
         public string Title
         {
             get

@@ -27,12 +27,7 @@ namespace LaundryManagerWeb.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly IMapper _mapper;
-
-        private ISession Session => _httpContextAccessor.HttpContext.Session;
-        private readonly string _cartItesmSessionKey = "CartItems";
-        private readonly string _cartItemsCountSessionKey = "CartItemsCount";
-
+        private string userId;
 
         #endregion
 
@@ -41,12 +36,7 @@ namespace LaundryManagerWeb.Controllers
         public CartController()
         {
             _context = new ApplicationDbContext();
-
-        }
-
-        public CartController(ApplicationUserManager userManager)
-        {
-            _userManager = userManager;
+            userId = "7hjsdjfj"; // User.Identity.GetUserId();
 
         }
 
@@ -58,21 +48,22 @@ namespace LaundryManagerWeb.Controllers
         public ActionResult Index()
         {
             var products = _context.Category?.ToList();
-            var viewModel = new OrderFormViewModel
-            {
-                Order = new Order(),
-                Category = products
-            };
-
-            var list = GlobalFunctions.MesureTypes(0);
-
             var cartItems = new List<CartItemModel>();
             if (HttpContext.Session["cartItems"] != null)
                 cartItems = (List<CartItemModel>)HttpContext.Session["cartItems"];
 
-            ViewData["MesureTypes"] = list;
-            ViewData["cartItems"] = cartItems;
 
+            var viewModel = new OrderFormViewModel
+            {
+                Order = new Order(),
+                Category = products,
+                CartItem = cartItems.ToArray(),
+            };
+
+            var list = GlobalFunctions.MesureTypes(0);
+
+            ViewData["MesureTypes"] = list;
+ 
             return View("Index", viewModel);
         }
 
@@ -117,6 +108,7 @@ namespace LaundryManagerWeb.Controllers
                     Id = selectedItem.Id,
                     Name = selectedItem.Name,
                     Price = selectedItem.UnitCharge,
+                    UnitType = selectedItem.UnitType == 1 ? "Kg" : "Pieces",
                     Quantity = 1,
                 };
 
@@ -160,87 +152,126 @@ namespace LaundryManagerWeb.Controllers
         [Authorize]
         public async Task<ActionResult> Checkout()
         {
-            // if (Session.GetString(_cartItesmSessionKey) == null)
-            //   return View("Index");
+            if (HttpContext.Session["cartItems"] == null)
+                return View("Index");
 
-            var user = await GetCurrentUserAsync();
-            var checkoutModel = new CheckoutModel();
-            //var cartItems = JsonConvert.DeserializeObject<List<CartItemModel>>(Session.GetString(_cartItesmSessionKey));
+            var cartItems = new List<CartItemModel>();
 
-            // checkoutModel.CartItemModel = cartItems;
+            if (HttpContext.Session["cartItems"] != null)
+                cartItems = (List<CartItemModel>)HttpContext.Session["cartItems"];
 
-            return View(checkoutModel);
+
+            var viewModel = new OrderFormViewModel
+            {
+                Order = new Order(),
+                CartItem = cartItems.ToArray(),
+            };
+
+
+            return View(viewModel);
         }
 
         // POST: /Cart/Checkout
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<ActionResult> Checkout(CheckoutModel model)
+        public async Task<ActionResult> Checkout(Order order)
         {
-            // get current user
-            var user = await GetCurrentUserAsync();
             var totalOrderPrice = 0m;
 
-            // create order entity 
-            var orderEntity = new Order
+
+            if (!ModelState.IsValid)
             {
-                OrderReference = GenerateUniqueOrderNumber(),
-                UserId = user.Id,
-                Status = 0,
-                CustomerName = "",
-                CustomerPhone = "",
-                PickUpPerson = "",
-                PickUpDateTime = DateTime.Now,
-                PickUpPersonPhone = ""
-            };
+                var cartItems = new List<CartItemModel>();
 
-            var orderItemEntities = new List<OrderItem>();
-            var cartItems = new List<CartItemModel>();
+                if (HttpContext.Session["cartItems"] != null)
+                    cartItems = (List<CartItemModel>)HttpContext.Session["cartItems"];
 
 
-            // get cart session
-            //if (Session.GetString(_cartItesmSessionKey) != null)
-            //  cartItems = JsonConvert.DeserializeObject<List<CartItemModel>>(Session.GetString(_cartItesmSessionKey));
-
-            foreach (var item in cartItems)
-            {
-                var currentItem = _context.Category.SingleOrDefault(c => c.Id == item.Id);
-                if (currentItem != null)
+                var viewModel = new OrderFormViewModel
                 {
-                    var newOrderItem = new OrderItem
-                    {
-                        OrderId = orderEntity.Id,
-                        ProductId = item.Id,
-                        Quantity = item.Quantity,
-                        UnitPrice = item.Price,
-                        TotalPrice = (item.Price * item.Quantity)
-                    };
+                    Order = new Order(),
+                    CartItem = cartItems.ToArray(),
+                };
 
-                    orderItemEntities.Add(newOrderItem);
-                    totalOrderPrice += newOrderItem.TotalPrice;
-                }
+                return View("Checkout", viewModel);
             }
-
-            // check if the order have item/s
-            if (orderItemEntities.Count > 0)
+            try
             {
-                orderEntity.Items = orderItemEntities;
-                orderEntity.TotalCost = totalOrderPrice;
-                orderEntity.TotalDiscount = 0;
+                var orderItemEntities = new List<OrderItem>();
+                var cartItems = new List<CartItemModel>();
 
-                // save
-                _context.Order.Add(orderEntity);
 
-                // clear cart session
-                HttpContext.Session.Remove("OrderItem");
+                // get cart session
+                if (HttpContext.Session["cartItems"] != null)
+                    cartItems = (List<CartItemModel>)HttpContext.Session["cartItems"];
 
-                return RedirectToAction("OrderHistoryList", "Manage");
+
+                foreach (var item in cartItems)
+                {
+                    var currentItem = _context.Category.SingleOrDefault(c => c.Id == item.Id);
+                    if (currentItem != null)
+                    {
+                        var newOrderItem = new OrderItem
+                        {
+                            OrderId = order.Id,
+                            ProductId = item.Id,
+                            Quantity = item.Quantity,
+                            UnitPrice = item.Price,
+                            TotalPrice = (item.Price * item.Quantity)
+                        };
+
+                        orderItemEntities.Add(newOrderItem);
+                        totalOrderPrice += newOrderItem.TotalPrice;
+                    }
+                }
+
+
+                if (order.Id == 0)
+                {
+                    order.CreatedAt = DateTime.Now;
+                    order.ModifiedAt = DateTime.Now;
+                    order.CreatedBy = userId;
+                    order.ModifiedBy = userId;
+
+                    // check if the order have item/s
+                    if (orderItemEntities.Count > 0)
+                    {
+                        order.Items = orderItemEntities;
+                        order.TotalCost = totalOrderPrice;
+                        order.TotalDiscount = 0;
+
+                        // save
+                        _context.Order.Add(order);
+
+                        // clear cart session
+                        HttpContext.Session.Remove("cartItems");
+
+                        return RedirectToAction("Index", "Order");
+                    }
+                }
+                else
+                {
+                    var selectedOrder = _context.Order.Single(m => m.Id == order.Id);
+                    selectedOrder.CustomerName = order.CustomerName;
+                    selectedOrder.CustomerPhone = order.CustomerPhone;
+                    selectedOrder.PickUpPerson = order.PickUpPerson;
+                    selectedOrder.PickUpPersonPhone = order.PickUpPersonPhone;
+                    selectedOrder.PickUpDateTime = order.PickUpDateTime;
+                    selectedOrder.ModifiedAt = DateTime.Now;
+                    selectedOrder.ModifiedBy = userId;
+
+                    _context.SaveChanges();
+
+                }
+
+                return RedirectToAction("index", "Order");
+
             }
-
-            // something went wrong
-            cartItems = new List<CartItemModel>();
-            return RedirectToAction("Index", "Cart", cartItems);
+            catch (Exception e)
+            {
+                return RedirectToAction("Checkout", "Cart");
+            }
         }
 
         #endregion
@@ -261,12 +292,6 @@ namespace LaundryManagerWeb.Controllers
             }
 
             return orderNumber;
-        }
-
-        private Task<ApplicationUser> GetCurrentUserAsync()
-        {
-            var userId = User.Identity.GetUserId();
-            return _userManager.FindByIdAsync(userId);
         }
 
         #endregion
