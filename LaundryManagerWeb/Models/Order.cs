@@ -8,6 +8,7 @@ namespace LaundryManagerWeb.Models
 
     public partial class Order
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string OrderReference { get; set; }

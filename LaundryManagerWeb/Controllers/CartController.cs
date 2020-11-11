@@ -36,7 +36,6 @@ namespace LaundryManagerWeb.Controllers
         public CartController()
         {
             _context = new ApplicationDbContext();
-            userId = "7hjsdjfj"; // User.Identity.GetUserId();
 
         }
 
@@ -47,6 +46,7 @@ namespace LaundryManagerWeb.Controllers
         // GET: /Cart/
         public ActionResult Index()
         {
+            //var userId = User.Identity.GetUserId();
             var products = _context.Category?.ToList();
             var cartItems = new List<CartItemModel>();
             if (HttpContext.Session["cartItems"] != null)
@@ -59,6 +59,7 @@ namespace LaundryManagerWeb.Controllers
                 Category = products,
                 CartItem = cartItems.ToArray(),
             };
+            viewModel.Order.UserId = User.Identity.GetUserId();
 
             var list = GlobalFunctions.MesureTypes(0);
 
@@ -167,6 +168,8 @@ namespace LaundryManagerWeb.Controllers
                 CartItem = cartItems.ToArray(),
             };
 
+            viewModel.Order.UserId = User.Identity.GetUserId();
+
 
             return View(viewModel);
         }
@@ -193,6 +196,7 @@ namespace LaundryManagerWeb.Controllers
                     Order = new Order(),
                     CartItem = cartItems.ToArray(),
                 };
+                viewModel.Order.UserId = User.Identity.GetUserId();
 
                 return View("Checkout", viewModel);
             }
@@ -200,7 +204,7 @@ namespace LaundryManagerWeb.Controllers
             {
                 var orderItemEntities = new List<OrderItem>();
                 var cartItems = new List<CartItemModel>();
-
+                var nextOrderId = _context.Order.Count() + 1;
 
                 // get cart session
                 if (HttpContext.Session["cartItems"] != null)
@@ -214,15 +218,17 @@ namespace LaundryManagerWeb.Controllers
                     {
                         var newOrderItem = new OrderItem
                         {
-                            OrderId = order.Id,
+                            OrderId = nextOrderId,
                             ProductId = item.Id,
                             Quantity = item.Quantity,
                             UnitPrice = item.Price,
-                            TotalPrice = (item.Price * item.Quantity)
+                            UserId = order.UserId,
+                            CreatedAt = DateTime.Now,
+                            Notes = ""
                         };
 
                         orderItemEntities.Add(newOrderItem);
-                        totalOrderPrice += newOrderItem.TotalPrice;
+                        totalOrderPrice += Convert.ToDecimal(newOrderItem.UnitPrice * newOrderItem.Quantity);
                     }
                 }
 
@@ -231,23 +237,37 @@ namespace LaundryManagerWeb.Controllers
                 {
                     order.CreatedAt = DateTime.Now;
                     order.ModifiedAt = DateTime.Now;
-                    order.CreatedBy = userId;
-                    order.ModifiedBy = userId;
+                    order.CreatedBy = order.UserId;
+                    order.ModifiedBy = order.UserId;
+                    order.OrderReference = this.GenerateUniqueOrderNumber();
+                    order.PaidAmount = Convert.ToDecimal(0);
+                    order.TotalDiscount = Convert.ToDecimal(0);
+                    order.PaidNote = "";
+                    order.Status = 0;
+                    order.OrderNotes = "";
 
                     // check if the order have item/s
                     if (orderItemEntities.Count > 0)
                     {
                         order.Items = orderItemEntities;
                         order.TotalCost = totalOrderPrice;
-                        order.TotalDiscount = 0;
+                        order.TotalDiscount = Convert.ToDecimal(0);
 
                         // save
-                        _context.Order.Add(order);
+                        var added = _context.Order.Add(order);
+                        _context.SaveChanges();
+                        if (added.Id > 0)
+                        {
+                            // clear cart session
+                            HttpContext.Session.Remove("cartItems");
 
-                        // clear cart session
-                        HttpContext.Session.Remove("cartItems");
+                            return RedirectToAction("Index", "Order");
+                        } else
+                        {
+                            return RedirectToAction("Checkout", "Cart");
+                        }
 
-                        return RedirectToAction("Index", "Order");
+                        
                     }
                 }
                 else

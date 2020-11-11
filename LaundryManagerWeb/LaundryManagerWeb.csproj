@@ -2810,7 +2810,7 @@
     <Content Include="Views\Shared\_FE_NavBar.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Shared\_FE_Footer.cshtml" />
-    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\ViewOrder.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\Checkout.cshtml" />

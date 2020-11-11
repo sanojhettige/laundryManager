@@ -1,0 +1,100 @@
+﻿@{ ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_FE_Layout.cshtml"; }
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Order History</h2>
+                </div>
+                <div class="col-md-6">
+                    <a href="/Cart" class="btn btn-primary float-right">New Order</a>
+                </div>
+            </div>
+
+            <table id="orders" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th width="10%">Order Ref.</th>
+                        <th width="20%">Order Date</th>
+                        <th width="30%">Items</th>
+                        <th width="20%">Order Total</th>
+                        <th width="10%">Order Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            @section scripts
+{
+                <script>
+                    $(document).ready(function () {
+                        var table = $("#orders").DataTable({
+                            ajax: {
+                                url: "/api/order",
+                                dataSrc: ""
+                            },
+                            columns: [
+                                {
+                                    data: "orderReference",
+                                    render: function (data, type, order) {
+                                        return "<a href='/Order/edit/" + order.id + "'>" + order.orderReference + "</a>";
+                                    }
+                                },
+                                {
+                                    data: "createdAt",
+                                    render: function (data, type, order) {
+                                        return order.createdAt
+                                    }
+                                },
+                                {
+                                    data: "items",
+                                    render: function (data, type, order) {
+                                        return "";
+                                    }
+                                },
+                                {
+                                    data: "totalCost",
+                                    render: function (data, type, order) {
+                                        return 0;
+                                    }
+                                },
+                                {
+                                    data: "status",
+                                    render: function (data, type, order) {
+                                        return "New"
+                                    }
+                                }
+                                {
+                                    data: "id",
+                                    render: function (data, type, order) {
+                                        let content = "<a href='/Order/edit/" + order.id + "' class='btn btn-success btn-sm'>Edit</a>";
+                                        content += "<button class='btn btn-danger btn-sm delete' data-order-id=" + data + ">Delete</button>";
+
+                                        return "<div class='btn-group'>" + content + "</div>";
+                                    }
+                                }
+                            ]
+                        });
+
+                        $("#orders").on("click", ".delete", function () {
+                            var button = $(this).attr("data-order-id");
+                            if (confirm("are you sure you want to delete the order?")) {
+                                $.ajax({
+                                    url: "/api/order/" + button,
+                                    method: "DELETE",
+                                    dataType: "json",
+                                    success: function (data) {
+                                        window.location.reload();
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    }
+                                })
+                            }
+                        })
+                    })</script>
+            }
+
+            </div>
+        </section>

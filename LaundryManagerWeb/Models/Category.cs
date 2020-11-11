@@ -8,6 +8,7 @@ namespace LaundryManagerWeb.Models
 {
     public partial class Category
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

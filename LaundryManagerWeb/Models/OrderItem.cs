@@ -8,6 +8,7 @@ namespace LaundryManagerWeb.Models
 
     public partial class OrderItem
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int OrderId { get; set; }
@@ -19,8 +20,6 @@ namespace LaundryManagerWeb.Models
         public int? Quantity { get; set; }
 
         public decimal? UnitPrice { get; set; }
-
-        public decimal TotalPrice { get; set; }
 
         public string Notes { get; set; }
 

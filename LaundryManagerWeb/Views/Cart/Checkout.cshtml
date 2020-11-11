@@ -2,8 +2,14 @@
 @{ ViewBag.Title = "CheckOut";
     Layout = "~/Views/Shared/_FE_Layout.cshtml"; }
 
+@section styles
+{
+    @Styles.Render("~/bundles/datepicker-css")
+}
+
 @using (Html.BeginForm("Checkout", "Cart"))
 {
+    @Html.ValidationSummary()
     <section>
         <div class="container">
             <div class="row">
@@ -31,7 +37,7 @@
                     <div class="form-group">
                         @Html.LabelFor(m => m.Order.PickUpDateTime)
                         @Html.TextBoxFor(m => m.Order.PickUpDateTime, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Order.PickUpDateTime, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => m.Order.PickUpDateTime, "", new { @class = "text-danger datepicker" })
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -59,10 +65,16 @@
                     </table>
                 </div>
                 <div class="col-md-12">
+                    @Html.HiddenFor(m => m.Order.UserId)
                     <button type="submit" class="btn btn-primary">Place Order</button>
                 </div>
             </div>
 
         </div>
     </section>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/datepicker-js")
 }
