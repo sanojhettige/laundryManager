@@ -167,6 +167,11 @@ namespace LaundryManagerWeb.Controllers
                 Order = new Order(),
                 CartItem = cartItems.ToArray(),
             };
+            viewModel.Order.CustomerName = "Sanoj";
+            viewModel.Order.CustomerPhone = "0713359819";
+            viewModel.Order.PickUpPerson = "Sanoj";
+            viewModel.Order.PickUpDateTime = DateTime.Now;
+            viewModel.Order.PickUpPersonPhone = "0713359819";
 
             viewModel.Order.UserId = User.Identity.GetUserId();
 
@@ -221,6 +226,7 @@ namespace LaundryManagerWeb.Controllers
                             OrderId = nextOrderId,
                             ProductId = item.Id,
                             Quantity = item.Quantity,
+                            ProductName = item.Name,
                             UnitPrice = item.Price,
                             UserId = order.UserId,
                             CreatedAt = DateTime.Now,
@@ -239,7 +245,7 @@ namespace LaundryManagerWeb.Controllers
                     order.ModifiedAt = DateTime.Now;
                     order.CreatedBy = order.UserId;
                     order.ModifiedBy = order.UserId;
-                    order.OrderReference = this.GenerateUniqueOrderNumber();
+                    order.OrderReference = this.GenerateUniqueOrderNumber(nextOrderId);
                     order.PaidAmount = Convert.ToDecimal(0);
                     order.TotalDiscount = Convert.ToDecimal(0);
                     order.PaidNote = "";
@@ -298,20 +304,9 @@ namespace LaundryManagerWeb.Controllers
 
         #region Helpers
 
-        private string GenerateUniqueOrderNumber()
+        private string GenerateUniqueOrderNumber(int id)
         {
-            var rand = new Random();
-            string orderNumber = rand.Next(100, 999) + "-" + rand.Next(100, 999) + "-" + rand.Next(100000, 999999);
-
-            var orderId = orderNumber;
-
-            while (orderId != null)
-            {
-                orderNumber = rand.Next(100, 999) + "-" + rand.Next(100, 999) + "-" + rand.Next(100000, 999999);
-                orderId = orderNumber;
-            }
-
-            return orderNumber;
+            return "INV"+ id;
         }
 
         #endregion

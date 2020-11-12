@@ -1,17 +1,129 @@
-﻿
-@{
-    Layout = null;
+﻿@{ ViewBag.Title = "View Order";
+    Layout = ViewData["LayOut"].ToString();
+
+    var balance = Convert.ToDecimal(Model.Order.TotalCost - Model.Order.PaidAmount);
+    var paidAmount = Convert.ToDecimal(Model.Order.PaidAmount);
+    var totalDiscount = Convert.ToDecimal(Model.Order.TotalDiscount);
+    var totalCost = Convert.ToDecimal(Model.Order.TotalCost);
 }
 
-<!DOCTYPE html>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+            <div class="invoice-box">
+                <table cellpadding="0" cellspacing="0">
+                    <tr class="top">
+                        <td colspan="4">
+                            <table>
+                                <tr>
+                                    <td class="title">
+                                        XYZ Laundry
+                                    </td>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ViewOrder</title>
-</head>
-<body>
-    <div> 
-    </div>
-</body>
-</html>
+                                    <td>
+                                        Invoice #: @Model.Order.OrderReference<br>
+                                        Created Time: @Model.Order.CreatedAt<br>
+                                        PickUp Time: @Model.Order.PickUpDateTime
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr class="information">
+                        <td colspan="4">
+                            <table>
+                                <tr>
+                                    <td>
+                                        Customer Name: @Model.Order.CustomerName<br>
+                                        Customer Phone: @Model.Order.CustomerPhone
+                                    </td>
+
+                                    <td>
+                                        Pickup Person: @Model.Order.PickUpPerson<br>
+                                        Contact Number: @Model.Order.PickUpPersonPhone
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr class="heading">
+                        <td>
+                            Item
+                        </td>
+                        <td>Quantity</td>
+                        <td>
+                            Unit Price
+                        </td>
+                        <td>Price</td>
+                    </tr>
+                    @foreach (var x in Model.OrderItem)
+                    {
+                        <tr class="item">
+                            <td>
+                                @x.ProductName
+                            </td>
+                            <td>
+                                @x.Quantity
+                            </td>
+                            <td align="right">
+                                @x.UnitPrice
+                            </td>
+                            <td>
+
+                                @{ 
+                                    var total = Convert.ToDecimal(x.Quantity * x.UnitPrice);
+                                }
+                                @total
+                            </td>
+                        </tr>
+                    }
+
+                    <tr class="total">
+                        <td colspan="3"></td>
+
+                        <td>
+                            Total: @totalCost
+                        </td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3"></td>
+
+                        <td>
+                            Discount: @totalDiscount
+                        </td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3"></td>
+
+                        <td>
+                            Paid: @paidAmount
+                        </td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3"></td>
+
+                        <td>
+
+                            Balance: @balance
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="left">
+                            Order Notes <br/>
+                            @Model.Order.OrderNotes
+                        </td>
+                    </tr>
+                </table>
+            </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="/Order" class="btn btn-primary float-right">Back to Orders</a>
+                </div>
+            </div>
+            </div>
+</section>

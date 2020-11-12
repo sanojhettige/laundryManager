@@ -27,5 +27,40 @@ namespace LaundryManagerWeb.App_Code
             },
             "ID", "Name", 1);
         }
+
+        public static string OrderStatus(int id)
+        {
+            var status = "New";
+
+            if (id == 1)
+            {
+                status = "Accepted";
+            }
+            else if (id == 2)
+            {
+                status = "Processing";
+            }
+            else if (id == 3)
+            {
+                status = "Ready to Dispatch";
+            }
+            else if (id == 4)
+            {
+                status = "Dispatched";
+            }
+            else if (id == 5)
+            {
+                status = "Customer Collected";
+            }
+            else if (id == 6)
+            {
+                status = "Cancelled";
+            }
+            else
+            {
+                status = "New";
+            }
+            return status;
+        }
     }
 }

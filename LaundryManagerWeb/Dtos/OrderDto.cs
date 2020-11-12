@@ -13,6 +13,8 @@ namespace LaundryManagerWeb.Dtos
         public int Id { get; set; }
         public string UserId { get; set; }
 
+        public string OrderReference { get; set; }
+
         public decimal TotalDiscount { get; set; }
         public decimal TotalCost { get; set; }
 
@@ -23,7 +25,6 @@ namespace LaundryManagerWeb.Dtos
         public decimal? PaidAmount { get; set; }
 
         public string PaidNote { get; set; }
-
 
         [Required]
         public string CustomerName { get; set; }
@@ -37,6 +38,8 @@ namespace LaundryManagerWeb.Dtos
         public string PickUpPersonPhone { get; set; }
 
         public DateTime PickUpDateTime { get; set; }
+
+        public DateTime CreatedAt { get; set; }
 
         public OrderItemDto Items { get; set; }
     }

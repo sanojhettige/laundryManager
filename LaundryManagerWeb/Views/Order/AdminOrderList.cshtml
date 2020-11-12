@@ -1,29 +1,22 @@
 ﻿@{ ViewBag.Title = "Orders";
     Layout = ViewData["LayOut"].ToString();
-    }
-
-@section styles
-{
-    @Styles.Render("~/bundles/datatable-css")
 }
 
-
-<section>
-    <div class="container">
-
-        <div class="row justify-content-center">
-            <div class="col-xl-7 col-lg-8">
-                <div class="section-tittle text-center mb-55">
-                    <h2>Order History</h2>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Orders</h2>
         </div>
+        <div class="col-md-6">
+            @Html.ActionLink("New Order", "Index", "Cart", null, new { @class = "btn btn-primary float-right" })
+        </div>
+    </div>
 
         <table id="orders" class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th width="10%">Order Ref.</th>
                     <th width="25%">Order Date</th>
+                    <th>Customer Name</th>
                     <th width="25%">Pickup Time</th>
                     <th width="20%">Order Total</th>
                     <th width="10%">Status</th>
@@ -35,7 +28,6 @@
 
         @section scripts
 {
-            @Scripts.Render("~/bundles/datatable-js")
 
             <script>
                 $(document).ready(function () {
@@ -54,13 +46,19 @@
                             {
                                 data: "createdAt",
                                 render: function (data, type, order) {
-                                    return moment(data).format('MMMM Do YYYY')
+                                    return moment(order.createdAt).format('MMMM Do YYYY');
+                                }
+                            },
+                            {
+                                data: "customerName",
+                                render: function (data, type, order) {
+                                    return order.customerName + "/" + order.customerPhone
                                 }
                             },
                             {
                                 data: "pickUpDateTime",
                                 render: function (data, type, order) {
-                                    return moment(data).format('MMMM Do YYYY, h:mm a')
+                                    return moment(data).format('MMMM Do, h:mm a');
                                 }
                             },
                             {
@@ -73,7 +71,7 @@
                                 data: "status",
                                 render: function (data, type, order) {
                                     switch (data) {
-                                        case 2:
+                                        case 1:
                                             return "Accepted";
                                         case 2:
                                             return "Processing";
@@ -94,10 +92,15 @@
                             {
                                 data: "id",
                                 render: function (data, type, order) {
-                                    let content = "<a href='/Order/ViewOrder/" + order.id + "' class='genric-btn success radius btn-sm'>View</a>";
-                                    if (order.status !== 6 && order.status !== 5) { content += "<button class='genric-btn warning radius status' data-order-type='6' data-order-id=" + data + ">Cancel</button>"; }
+                                    let content = "<a href='/Order/ViewOrder/" + order.id + "' class='btn btn-info btn-sm'>View</a>";
+                                    if (order.status !== 6 && order.status !== 5) { content += "<button class='btn btn-warning btn-sm status' data-order-type='6' data-order-id=" + data + ">Cancel</button>"; }
+                                    if (order.status === 0) { content += "<button class='btn btn-success btn-sm status' data-order-type='1' data-order-id=" + data + ">Accept</button>"; }
+                                    if (order.status === 1) { content += "<button class='btn btn-success btn-sm status' data-order-type='2' data-order-id=" + data + ">Start Process</button>"; }
+                                    if (order.status === 2) { content += "<button class='btn btn-success btn-sm status' data-order-type='3' data-order-id=" + data + ">Ready to Dispatch</button>"; }
+                                    if (order.status === 3) { content += "<button class='btn btn-success btn-sm status' data-order-type='4' data-order-id=" + data + ">Dispatched</button>"; }
+                                    if (order.status === 4) { content += "<button class='btn btn-success btn-sm status' data-order-type='5' data-order-id=" + data + ">Collected</button>"; }
 
-                                    content += "<button class='genric-btn danger radius status' data-order-type='99' data-order-id=" + data + ">Delete</button>";
+                                    content += "<button class='btn btn-danger btn-sm status' data-order-type='99' data-order-id=" + data + ">Delete</button>";
 
                                     return "<div class='btn-group'>" + content + "</div>";
                                 }
@@ -128,6 +131,3 @@
                     })
                 })</script>
         }
-
-    </div>
-</section>

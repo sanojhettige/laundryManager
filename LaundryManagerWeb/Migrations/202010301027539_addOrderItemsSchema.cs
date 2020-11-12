@@ -15,6 +15,7 @@ namespace LaundryManagerWeb.Migrations
                     OrderId = c.Int(nullable: false),
                     UserId = c.String(),
                     ProductId = c.Int(nullable: false),
+                    ProductName = c.String(nullable: false),
                     Quantity = c.Int(),
                     UnitPrice = c.Decimal(),
                     Notes = c.String(),

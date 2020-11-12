@@ -4,6 +4,14 @@
 
 <section>
     <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-8">
+                <div class="section-tittle text-center mb-55">
+                    <h2>ABC Laundry - Shop</h2>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="productcont">
@@ -46,15 +54,20 @@
                     <tbody>
                         @foreach (var x in Model.CartItem)
                         {
-                    <tr>
-                        <td>@x.Name</td>
-                        <td>@x.Quantity @x.UnitType</td>
-                        <td>@x.Price</td>
-                        <td>@x.Price * @x.Quantity</td>
-                        <td>
-                            @Html.ActionLink("Remove", "Remove/" + x.Id, "Cart", new { @class = "btn-remove btn btn-sm btn-danger" })
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>@x.Name</td>
+                                <td>@x.Quantity @x.UnitType</td>
+                                <td>@x.Price</td>
+                                <td>
+                                @{ 
+                                    var total = Convert.ToDecimal(x.Price * x.Quantity);
+                                }
+                                @total
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Remove", "Remove/" + x.Id, "Cart", new { @class = "btn-remove genric-btn danger btn-sm radius" })
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

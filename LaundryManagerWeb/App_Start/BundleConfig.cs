@@ -18,7 +18,8 @@ namespace LaundryManagerWeb
                             "~/Assets/Vendor/datatables/dataTables.bootstrap4.min.js",
                            "~/Assets/scripts/typeahead.bundle.js",
                            "~/Assets/scripts/toastr.js",
-                             "~/Assets/scripts/bloodhound.js"
+                             "~/Assets/scripts/bloodhound.js",
+                             "~/Assets/scripts/moment.js"
                              ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -45,8 +46,14 @@ namespace LaundryManagerWeb
                 "~/Assets/FE_Assets/js/owl.carousel.min.js",
                 "~/Assets/FE_Assets/js/slick.min.js",
                 "~/Assets/FE_Assets/js/plugins.js",
-                "~/Assets/FE_Assets/js/main.js"
+                "~/Assets/FE_Assets/js/main.js",
+                "~/Assets/scripts/moment.js"
                 ));
+
+            bundles.Add(new ScriptBundle("~/bundles/datatable-js").Include(
+                "~/Assets/Vendor/datatables/jquery.dataTables.min.js",
+                            "~/Assets/Vendor/datatables/dataTables.bootstrap4.min.js"
+                            ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
@@ -84,6 +91,10 @@ namespace LaundryManagerWeb
                 "~/Assets/FE_Assets/css/style.css",
                 "~/Assets/FE_Assets/css/custom.css"
                 ));
+
+            bundles.Add(new StyleBundle("~/bundles/datatable-css").Include(
+                       "~/Assets/Vendor/datatables/dataTables.bootstrap4.min.css"
+                     ));
 
 
         }

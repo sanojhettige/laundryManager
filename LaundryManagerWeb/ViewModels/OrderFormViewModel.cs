@@ -13,6 +13,8 @@ namespace LaundryManagerWeb.ViewModels
         public IEnumerable<Category> Category { get; set; }
 
         public IEnumerable<CartItemModel> CartItem { get; set; }
+
+        public IEnumerable<OrderItem> OrderItem { get; set; }
         public string Title
         {
             get

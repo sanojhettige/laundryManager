@@ -12,6 +12,14 @@
     @Html.ValidationSummary()
     <section>
         <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center mb-55">
+                        <h2>ABC Laundry - Checkout</h2>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-7">
                     <div class="form-group">
@@ -58,7 +66,12 @@
                                     <td>@x.Name</td>
                                     <td>@x.Quantity @x.UnitType</td>
                                     <td>@x.Price</td>
-                                    <td>@x.Price * @x.Quantity</td>
+                                    <td>
+                                        @{
+                                            var total = Convert.ToDecimal(x.Price * x.Quantity);
+                                        }
+                                        @total
+                                    </td>
                                 </tr>
                             }
                         </tbody>

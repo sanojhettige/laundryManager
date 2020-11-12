@@ -17,8 +17,19 @@
                             @if (Request.IsAuthenticated)
                             {
                                 <li><a href="/Manage">My Account</a></li>
+                                <li><a href="/Order">My Orders</a></li>
                             }
                             <li><a href="#contact">Contact</a></li>
+                            @if (Request.IsAuthenticated)
+                            {
+                        <li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                            }
+                        </li>
+                            }
                         </ul>
                     </nav>
                 </div>
@@ -27,7 +38,7 @@
         <div class="header-right d-none d-lg-block">
             @if (!Request.IsAuthenticated)
             { <a href="/Account/login" class="header-btn1">SignIn</a> }
-            <a href="/Cart" class="header-btn2">Make an Appointment</a>
+            <a href="/Cart" class="header-btn2">Place New Order</a>
         </div>
         <!-- Mobile Menu -->
         <div class="col-12">

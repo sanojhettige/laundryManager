@@ -35,7 +35,7 @@ namespace WebApplication2.Controllers.Api
         public IEnumerable<CategoryDto> GetCategory()
         {
             var query = _context.Category
-                .Where(m => m.Status != 4);
+                .Where(m => m.Status != 99);
             return query
                 .ToList()
                 .Select(Mapper.Map<Category, CategoryDto>);

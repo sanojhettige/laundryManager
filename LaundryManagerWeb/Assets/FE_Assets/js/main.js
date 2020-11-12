@@ -243,13 +243,13 @@
 
 
 /* 10. WOW active */
-    new WOW().init();
+    //new WOW().init();
 
 // 11. ---- Mailchimp js --------//  
-    function mailChimp() {
-      $('#mc_embed_signup').find('form').ajaxChimp();
-    }
-    mailChimp();
+  //  function mailChimp() {
+      //$('#mc_embed_signup').find('form').ajaxChimp();
+    //}
+    //smailChimp();
 
 
 // 12 Pop Up Img
@@ -269,33 +269,38 @@
         type: 'iframe'
       });
     }
+    
 
-/* 13. counterUp*/
-    $('.counter').counterUp({
-      delay: 10,
-      time: 3000
-    });
+    /* 14. Datepicker */
+    if (jQuery.datepicker) {
+        $('#datepicker1').datepicker();
+    }
 
-/* 14. Datepicker */
-  $('#datepicker1').datepicker();
-
-// 15. Time Picker
-  $('#timepicker').timepicker();
-
-//16. Overlay
-  $(".snake").snakeify({
-    speed: 200
-  });
+    // 15. Time Picker
+    if (jQuery.timepicker) {
+        $('#timepicker').timepicker();
+    }
 
 
-//17.  Progress barfiller
+    //16. Overlay
+    if (jQuery.snakeify) {
+        $(".snake").snakeify({
+            speed: 200
+        });
+    }
 
-  $('#bar1').barfiller();
-  $('#bar2').barfiller();
-  $('#bar3').barfiller();
-  $('#bar4').barfiller();
-  $('#bar5').barfiller();
-  $('#bar6').barfiller();
+
+
+    //17.  Progress barfiller
+    if (jQuery.barfiller) {
+        $('#bar1').barfiller();
+        $('#bar2').barfiller();
+        $('#bar3').barfiller();
+        $('#bar4').barfiller();
+        $('#bar5').barfiller();
+        $('#bar6').barfiller();
+    }
+
 
 
 
