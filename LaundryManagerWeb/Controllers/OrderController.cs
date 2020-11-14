@@ -91,5 +91,49 @@ namespace LaundryManagerWeb.Controllers
                 return View("../Account/Login");
             }
         }
+
+
+        // GET: Create Payment
+        [Authorize(Roles = RoleName.Admin)]
+        public ActionResult Payment(int id)
+        {
+            var order = _context.Order.SingleOrDefault(c => c.Id == id);
+
+            if (order == null)
+                return HttpNotFound();
+
+
+            var viewModel = new OrderFormViewModel
+            {
+                Order = order
+            };
+
+            return View("PaymentForm", viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.Admin)]
+        public ActionResult SavePayment(Order order)
+        {
+            try
+            {
+                var selectedOrder = _context.Order.Single(m => m.Id == order.Id);
+                selectedOrder.PaidAmount = order.PaidAmount;
+                selectedOrder.PaidNote = order.PaidNote;
+                selectedOrder.ModifiedAt = DateTime.Now;
+                selectedOrder.ModifiedBy = userId;
+
+                _context.SaveChanges();
+
+                return RedirectToAction("index", "Order");
+
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("index", "Order");
+            }
+        }
     }
 }

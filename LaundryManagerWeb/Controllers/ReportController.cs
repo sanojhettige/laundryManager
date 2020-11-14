@@ -49,7 +49,7 @@ namespace LaundryManagerWeb.Controllers
         }
 
         // GET: Payments
-        public ActionResult Payments()
+        public ActionResult DuePayments()
         {
             return View();
         }

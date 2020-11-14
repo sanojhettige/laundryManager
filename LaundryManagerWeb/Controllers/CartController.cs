@@ -167,11 +167,17 @@ namespace LaundryManagerWeb.Controllers
                 Order = new Order(),
                 CartItem = cartItems.ToArray(),
             };
-            viewModel.Order.CustomerName = "Sanoj";
-            viewModel.Order.CustomerPhone = "0713359819";
-            viewModel.Order.PickUpPerson = "Sanoj";
-            viewModel.Order.PickUpDateTime = DateTime.Now;
-            viewModel.Order.PickUpPersonPhone = "0713359819";
+
+            if (User.IsInRole(RoleName.Customer))
+            {
+                viewModel.Order.CustomerName = User.Identity.Name;
+                viewModel.Order.CustomerPhone = "";
+                viewModel.Order.PickUpPerson = User.Identity.Name;
+                viewModel.Order.PickUpPersonPhone = "";
+            }
+                
+            viewModel.Order.PickUpDateTime = DateTime.Now.AddMinutes(240);
+            
 
             viewModel.Order.UserId = User.Identity.GetUserId();
 

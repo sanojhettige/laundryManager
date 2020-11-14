@@ -21,22 +21,23 @@ namespace WebApplication2.Controllers.Api
         {
             _context = new ApplicationDbContext();
         }
-        //GET /api/order/1
-        public IHttpActionResult GetOrder(int id)
+        //GET /api/order/due
+        public IEnumerable<OrderDto> GetOrder(string type)
         {
-            var order = _context.Order.SingleOrDefault(c => c.Id == id);
+            var userId = User.Identity.GetUserId().ToString();
+            var query = _context.Order
+            .Where(m => m.Status != 99)
+            .Where(m => m.PaidAmount < m.TotalCost);
 
-            if (order == null)
-                return NotFound();
-
-            return Ok(Mapper.Map<Order, OrderDto>(order));
+            return query
+            .ToList()
+            .Select(Mapper.Map<Order, OrderDto>)
+            .OrderBy(order => order.CreatedAt);
         }
 
         //GET /api/order
         public IEnumerable<OrderDto> GetOrder()
         {
-            
-
             if (User.IsInRole(RoleName.Customer))
             {
                 var userId = User.Identity.GetUserId().ToString();

@@ -318,6 +318,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CategoryController.cs" />
+    <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\OrderController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -2820,10 +2821,12 @@
     <Content Include="Views\Report\Orders.cshtml" />
     <Content Include="Views\Report\Customers.cshtml" />
     <Content Include="Views\Report\Payments.cshtml" />
+    <Content Include="Views\Order\PaymentForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Cron\" />
+    <Folder Include="Views\Customer\" />
     <Folder Include="Views\DuePayment\" />
     <Folder Include="Views\Print\" />
     <Folder Include="Views\Securities\" />

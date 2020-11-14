@@ -1,0 +1,43 @@
+﻿@model LaundryManagerWeb.ViewModels.OrderFormViewModel
+
+@{ /**/
+
+    ViewBag.Title = "Add Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+@using (Html.BeginForm("SavePayment", "Order"))
+{
+<div class="row">
+    <div class="form-group col-md-12">
+        Order Total due : @Model.Order.TotalCost.ToString()
+    </div>
+    <div class="form-group col-md-12">
+        @Html.LabelFor(m => m.Order.PaidAmount)
+        @Html.TextBoxFor(m => m.Order.PaidAmount, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Order.PaidAmount, "", new { @class = "text-danger" })
+    </div>
+</div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.Order.PaidNote)
+                        @Html.TextBoxFor(m => m.Order.PaidNote, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Order.PaidNote)
+                    </div>
+                </div>
+
+
+
+
+                                @Html.HiddenFor(m => m.Order.Id)
+                                                @Html.AntiForgeryToken()
+                                                                if (Model.Order.PaidAmount < Model.Order.TotalCost)
+                                                                {
+                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                }}
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

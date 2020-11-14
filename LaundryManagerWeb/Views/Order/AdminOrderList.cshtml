@@ -97,6 +97,7 @@
                                     if (order.status === 0) { content += "<button class='btn btn-success btn-sm status' data-order-type='1' data-order-id=" + data + ">Accept</button>"; }
                                     if (order.status === 1) { content += "<button class='btn btn-success btn-sm status' data-order-type='2' data-order-id=" + data + ">Start Process</button>"; }
                                     if (order.status === 2) { content += "<button class='btn btn-success btn-sm status' data-order-type='3' data-order-id=" + data + ">Ready to Dispatch</button>"; }
+                                    if (order.status === 2 || order.status === 3) { content += "<a href='/Order/Payment/" + order.id + "' class='btn btn-info btn-sm'>Payment</a>"; }
                                     if (order.status === 3) { content += "<button class='btn btn-success btn-sm status' data-order-type='4' data-order-id=" + data + ">Dispatched</button>"; }
                                     if (order.status === 4) { content += "<button class='btn btn-success btn-sm status' data-order-type='5' data-order-id=" + data + ">Collected</button>"; }
 

@@ -1,2 +1,124 @@
-﻿@{ ViewBag.Title = "Payments";
+﻿@{ ViewBag.Title = "Due Payments";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@section styles
+{
+    @Styles.Render("~/bundles/report-css")
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Due Payments</h2>
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+
+<table id="orders" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Order Ref.</th>
+            <th>Order Date</th>
+            <th>Customer</th>
+            <th>Pickup Person</th>
+            <th>Pickup Time</th>
+            <th>Order Total</th>
+            <th>Paid Amount</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/report-js")
+    <script>
+        $(document).ready(function () {
+
+            var table = $("#orders").DataTable({
+                ajax: {
+                    url: "/api/order/due",
+                    dataSrc: ""
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-primary'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-primary'
+                    }
+                ],
+                columns: [
+                    {
+                        data: "orderReference",
+                        render: function (data, type, order) {
+                            return order.orderReference;
+                        }
+                    },
+                    {
+                        data: "createdAt",
+                        render: function (data, type, order) {
+                            return moment(order.createdAt).format('MMMM Do YYYY, h:mm a')
+                        }
+                    },
+                    {
+                        data: "customerName",
+                        render: function (data, type, order) {
+                            return order.customerName + "/" + order.customerPhone
+                        }
+                    },
+                    {
+                        data: "pickUpPerson",
+                        render: function (data, type, order) {
+                            return order.pickUpPerson + "/" + order.pickUpPersonPhone
+                        }
+                    },
+                    {
+                        data: "pickUpDateTime",
+                        render: function (data, type, order) {
+                            return moment(order.pickUpDateTime).format('MMMM Do YYYY, h:mm a')
+                        }
+                    },
+                    {
+                        data: "totalCost",
+                        render: function (data, type, order) {
+                            return order.totalCost;
+                        }
+                    },
+                    {
+                        data: "paidAmount",
+                    },
+                    {
+                        data: "status",
+                        render: function (data, type, order) {
+                            switch (data) {
+                                case 1:
+                                    return "Accepted";
+                                case 2:
+                                    return "Processing";
+                                case 3:
+                                    return "Ready to Dispatch";
+                                case 4:
+                                    return "Dispatched";
+                                case 5:
+                                    return "Customer Collected";
+                                case 6:
+                                    return "Cancelled";
+                                    break;
+                                default:
+                                    return "New";
+                            }
+                        }
+                    }
+                ]
+            });
+
+
+        })</script>
+}
+
