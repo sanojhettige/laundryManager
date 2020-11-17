@@ -508,6 +508,7 @@
     <Content Include="Assets\FE_Assets\css\style.css" />
     <Content Include="Assets\FE_Assets\css\themify-icons.css" />
     <Content Include="Assets\FE_Assets\css\custom.css" />
+    <Content Include="Assets\FE_Assets\css\track-order.css" />
     <Content Include="Assets\FE_Assets\fonts\fa-brands-400.svg" />
     <Content Include="Assets\FE_Assets\fonts\fa-regular-400.svg" />
     <Content Include="Assets\FE_Assets\fonts\fa-solid-900.svg" />
@@ -2822,6 +2823,7 @@
     <Content Include="Views\Report\Customers.cshtml" />
     <Content Include="Views\Report\Payments.cshtml" />
     <Content Include="Views\Order\PaymentForm.cshtml" />
+    <Content Include="Views\Order\TrackOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

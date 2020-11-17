@@ -56,6 +56,23 @@ namespace LaundryManagerWeb.Controllers
             }
         }
 
+        // GET: Track Order
+        public ActionResult TrackOrder(int id)
+        {
+            var order = _context.Order.SingleOrDefault(c => c.Id == id);
+            var items = _context.OrderItem.Where(c => c.OrderId == id);
+            if (order == null)
+                return HttpNotFound();
+
+            var viewModel = new OrderFormViewModel
+            {
+                Order = order,
+                OrderItem = items
+
+            };
+
+            return View("TrackOrder", viewModel);
+        }
 
         // GET: ViewOrder
         public ActionResult ViewOrder(int id)

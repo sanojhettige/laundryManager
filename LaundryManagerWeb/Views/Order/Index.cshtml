@@ -48,7 +48,7 @@
                             {
                                 data: "orderReference",
                                 render: function (data, type, order) {
-                                    return order.orderReference;
+                                    return "<a href='/Order/trackOrder/" + order.id + "' class='genric-btn success radius btn-sm'>" + order.orderReference+"</a>";
                                 }
                             },
                             {

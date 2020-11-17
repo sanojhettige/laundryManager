@@ -89,7 +89,8 @@ namespace LaundryManagerWeb
                 "~/Assets/FE_Assets/css/slick.css",
                 "~/Assets/FE_Assets/css/nice-select.css",
                 "~/Assets/FE_Assets/css/style.css",
-                "~/Assets/FE_Assets/css/custom.css"
+                "~/Assets/FE_Assets/css/custom.css",
+                "~/Assets/FE_Assets/css/track-order.css"
                 ));
 
             bundles.Add(new StyleBundle("~/bundles/datatable-css").Include(

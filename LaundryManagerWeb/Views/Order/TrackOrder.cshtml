@@ -1,0 +1,124 @@
+﻿@{ ViewBag.Title = "Track Order";
+    Layout = "~/Views/Shared/_FE_Layout.cshtml"; }
+
+<section>
+    <div id="wrapper">
+        <br />
+        <br />
+        <div id="washingMachine" class="isFilled isOpen">
+            <div id="controls"></div>
+            <div id="door"></div>
+            <div id="tub">
+                <span class="clothes"></span>
+                <span class="clothes"></span>
+                <span class="clothes"></span>
+            </div>
+        </div>
+        <input type="hidden" value="@Model.Order.Status" id="orderStatus" />
+    </div>
+</section>
+
+@section scripts
+{
+    <script>
+        const washSpeed = 600; // If changed, need to be updated in the CSS as well
+        const washingMachine = document.getElementById('washingMachine');
+        const screen = document.getElementById('controls');
+
+        const status = {
+            opening: {
+                isActive: true,
+                statusClass: 'isOpen',
+                controller: document.getElementById('opening'),
+                controllerLabel: ["CLOSE", "OPEN"]
+            },
+            content: {
+                isActive: true,
+                statusClass: 'isFilled',
+                controller: document.getElementById('content'),
+                controllerLabel: ["EMPTY", "FILL"]
+            },
+            power: {
+                isActive: false,
+                statusClass: 'isWashing',
+                controller: document.getElementById('power'),
+                controllerLabel: ["STOP", "START"]
+            }
+        };
+
+
+        // PLAYGROUND ―――――――――――――――――――――――――
+        var orderStatus = $("#orderStatus").val();
+        if (orderStatus === '0') {
+            screen.innerHTML = "PENDING";
+        } else if (orderStatus === '1') {
+            screen.innerHTML = "RECEIVED";
+            washingMachine.classList.remove('isOpen');
+        } else if (orderStatus === '2') {
+            screen.innerHTML = "PROCESSING";
+            washingMachine.classList.remove('isOpen');
+            washingMachine.classList.add('isWashing');
+            washingMachine.classList.add("isStarting");
+            setTimeout(() => { washingMachine.classList.remove("isStarting"); }, washSpeed * 2);
+        } else if (orderStatus === '3') {
+            screen.innerHTML = "READY";
+            washingMachine.classList.remove('isOpen');
+        } else if (orderStatus === '4') {
+            screen.innerHTML = "READY";
+            washingMachine.classList.remove('isOpen');
+        } else if (orderStatus === '5') {
+            screen.innerHTML = "DISPATCHED";
+            washingMachine.classList.remove('isOpen');
+            washingMachine.classList.remove('isFilled');
+        } else if (orderStatus === '6') {
+            screen.innerHTML = "CANCELLED";
+            washingMachine.classList.remove('isFilled');
+        } else {
+            screen.innerHTML = "PENDING";
+        }
+
+        for (let action in status) {
+            const { statusClass, controller, controllerLabel } = status[action];
+
+            controller.addEventListener('click', function (event) {
+                const { isActive } = status[action];
+                washingMachine.classList.toggle(statusClass);
+                this.innerHTML = controllerLabel[isActive * 1];
+
+                if (action === "power" && !isActive) { // Slow start
+                    washingMachine.classList.add(statusClass);
+                    washingMachine.classList.add("isStarting");
+                    setTimeout(() => { washingMachine.classList.remove("isStarting"); }, washSpeed * 2);
+                }
+
+                status[action].isActive = !isActive;
+
+                setTimeout(function () {
+                    updateMachine();
+                }, 100); // Timeout needed because of a bug on FF when updating innerHTML
+            });
+        }
+
+        function updateMachine(status) {
+            const { opening, content, power } = status;
+
+            // Update playground
+
+            opening.controller.disabled = power.isActive;
+            content.controller.disabled = !opening.isActive;
+            power.controller.disabled = opening.isActive || !content.isActive;
+
+            // Update screen text
+
+            if (power.isActive) {
+                screen.innerHTML = "PROCESSING"
+            } else if (!content.isActive) {
+                screen.innerHTML = "EMPTY";
+            } else if (opening.isActive) {
+                screen.innerHTML = "🙃";
+            } else {
+                screen.innerHTML = "RECEIVED";
+            }
+        }
+    </script>
+}
